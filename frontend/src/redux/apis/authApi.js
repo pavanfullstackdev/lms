@@ -9,6 +9,8 @@ import {
   registrationFailure,
 } from "../reduxSlice/authSlice.js"; // Import the actions from your slice
 import { API_BASE_URL } from "../apiConstants";
+import { toast } from "sonner";
+import { ExtractErrorMessage } from "../../utility/extractErrorMessage.jsx";
 
 //User signup
 export const signupUser = createAsyncThunk(
@@ -21,12 +23,12 @@ export const signupUser = createAsyncThunk(
         credentials
       );
       dispatch(registrationSuccess(response.data));
+      toast.success(response?.message || "Refistration was successful.");
       return response.data;
     } catch (error) {
-      const errorMessage = error.response
-        ? error.response.data
-        : "Login failed";
+      const errorMessage = ExtractErrorMessage(error);
       dispatch(registrationFailure(errorMessage));
+      toast.error(errorMessage || "Please try again!");
       return rejectWithValue(errorMessage);
     }
   }
@@ -42,12 +44,12 @@ export const loginUser = createAsyncThunk(
         credentials
       ); // Replace with your login API endpoint
       dispatch(loginSuccess(response.data)); // Dispatch loginSuccess with user data
+      toast.success(response?.message || "Login was successful.");
       return response.data; // Return user data to be used in the fulfilled case
     } catch (error) {
-      const errorMessage = error.response
-        ? error.response.data
-        : "Login failed";
+      const errorMessage = ExtractErrorMessage(error);
       dispatch(loginFailure(errorMessage)); // Dispatch loginFailure with error message
+      toast.error(errorMessage || "Please try again!");
       return rejectWithValue(errorMessage); // Return error message to be used in the rejected case
     }
   }

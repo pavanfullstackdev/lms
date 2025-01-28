@@ -14,6 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, signupUser } from "../redux/apis/authApi.js";
+import { toast } from "sonner";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const Login = () => {
   const validateSignup = () => {
     const { username, email, password } = signupInput;
     if (!username || !email || !password) {
-      alert("All fields are required for Signup!");
+      toast.error("All fields are required for Signup!");
       return false;
     }
     return true;
@@ -47,12 +48,12 @@ const Login = () => {
     const { email, username, password } = loginInput;
     if (isEmailLogin) {
       if (!email || !password) {
-        alert("Email and Password are required!");
+        toast.error("Email and Password are required!");
         return false;
       }
     } else {
       if (!username || !password) {
-        alert("Username and Password are required!");
+        toast.error("Username and Password are required!");
         return false;
       }
     }
@@ -75,7 +76,7 @@ const Login = () => {
   // console.log(loginInput, "Login Input");
 
   return (
-    <div className="flex items-center w-full justify-center">
+    <div className="flex items-center w-full justify-center mt-20">
       <Tabs defaultValue="account" className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="signup">Signup</TabsTrigger>
